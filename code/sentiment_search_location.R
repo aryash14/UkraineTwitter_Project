@@ -90,8 +90,6 @@ getDataLoc <- function(phrase) {
   
   required_fields <- c("created_at", "user_screen_name", "user_location", "place.full_name", "place.country", "full_text", "sentiment")
 
-  # validate_results(results$df, min_results, required_fields)
-  
   
   #Transform results for sentiment plot
   results.df <- results$df
@@ -101,12 +99,16 @@ getDataLoc <- function(phrase) {
 
 phrases <- c("Russia invades Ukraine", "NATO", "Ukraine War", "Russian War", "Attack on Ukraine")
 for (phrase in phrases) {
+  #getting the results
   results <- getDataLoc(phrase)
+  #filtering based on cosine similarity 
   df <- results[which(results$cosine_similarity > 0.25), ]
   count <- as.data.frame(table(df$place.country))
   count <- count[order(count$Freq , decreasing = TRUE), ]
   count <- count[1:5, ]
+  #getting the percenatge
   count['percentage'] <- round(count$Freq / nrow(df), 2) * 100
+  #plot the barplot
   barplot(count$Freq, names = count$Var1, main = phrase);text(bp, count$Freq - 100, labels = count$percentage)
 }
 
@@ -114,6 +116,6 @@ results <- getDataLoc("Russia invades Ukraine")
 count <- as.data.frame(table(results$place.country))
 count <- count[order(count$Freq , decreasing = TRUE), ]
 count <- count[1:5, ]
-count['percentage'] <- round(count$Freq / nrow(df), 2) * 100
+count['percentage'] <- round(count$Freq / nrow(results), 2) * 100
 View(count)
 barplot(count$Freq, names = count$Var1, main = "Overall");text(bp, count$Freq - 100, labels = count$percentage)
