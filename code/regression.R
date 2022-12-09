@@ -1,6 +1,6 @@
 #read the data and view the structure
 library(xlsx)
-kl_df <- read.xlsx("./data.xlsx", sheetName = "Sheet3", header = TRUE)
+kl_df <- read.xlsx("./data/data.xlsx", sheetName = "Sheet3", header = TRUE)
 str(kl_df)
 View(kl_df)
 
